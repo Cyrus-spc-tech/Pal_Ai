@@ -1,0 +1,1 @@
+# Entry point: Run this to fire up the app (e.g., CLI chat loop).

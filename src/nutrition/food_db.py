@@ -1,0 +1,1 @@
+# Local or API wrapper for food data (e.g., quick lookup for 'apple' = 52 cal, 14g carbs).

@@ -1,0 +1,1 @@
+# Crunches daily eats: Calculates nutrition index (calories, macros, vitamins) using a lib like nutritionix or a simple DB.

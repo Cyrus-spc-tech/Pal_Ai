@@ -1,0 +1,1 @@
+# Manages user details: Student? Job? Goals? Saves/loads from DB.

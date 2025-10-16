@@ -1,0 +1,1 @@
+# DB schemas: User table, Activity logs, Advice history (SQLite to start, easy upgrade to Postgres).

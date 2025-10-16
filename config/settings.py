@@ -1,0 +1,1 @@
+# Central spot for configs: DB paths, API endpoints, default advice tones.

@@ -1,0 +1,1 @@
+# Daily logs: Food intake, workouts, mood – timestamps everything.

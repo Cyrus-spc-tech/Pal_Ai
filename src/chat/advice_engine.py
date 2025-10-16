@@ -1,0 +1,1 @@
+# Advice giver: Pulls from user profile/activities to suggest stuff (e.g., 'Dude, after that gym sesh, try this protein hack').
