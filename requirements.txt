@@ -1,1 +1,7 @@
 # List of Python libs (e.g., openai for chat smarts, sqlite3 for DB, pandas for nutrition calcs).
+openai==1.12.0  # For chat responses – swap for Groq if you're feeling xAI fam
+pandas==2.2.2   # Nutrition calcs and data magic
+python-dotenv==1.0.1  # Loads your .env secrets
+sqlite3  # Built-in, but listed for sanity
+requests==2.32.3  # For Nutritionix API calls
+pytest==8.3.3    # Testing suite
