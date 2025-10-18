@@ -1,12 +1,25 @@
 # Local or API wrapper for food data (e.g., quick lookup for 'apple' = 52 cal, 14g carbs).
 import requests
-from config.settings import CALORIE_NINJAS_API_KEY
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+import config.settings as settings
 
 def get_nutrition(food_query):
     url = "https://api.calorieninjas.com/v1/nutrition"
-    headers = {"X-Api-Key": CALORIE_NINJAS_API_KEY}
+    api_key = getattr(settings, 'CALORIE_NINJAS_API_KEY', None)
+    if not api_key:
+        print(" CALORIE_NINJAS_API_KEY not found in .env")
+        return None
+    headers = {"X-Api-Key": api_key}
     params = {"query": food_query}
-    response = requests.get(url, headers=headers, params=params)
-    if response.status_code == 200:
-        return response.json()  # e.g., {'items': [{'name': 'chicken', 'calories': 165, 'protein_g': 31, ...}]}
-    return None
+    try:
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code == 200:
+            return response.json()  # e.g., {'items': [{'name': 'chicken', 'calories': 165, 'protein_g': 31, ...}]}
+        else:
+            print(f" Nutrition API error: {response.status_code}")
+            return None
+    except Exception as e:
+        print(f" Error calling nutrition API: {e}")
+        return None
