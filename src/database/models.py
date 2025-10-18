@@ -5,7 +5,12 @@ from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+# Add project root to path
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
 from config.settings import DB_PATH
 
 # DB engine – points to your .env path

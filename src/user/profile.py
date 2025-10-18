@@ -2,10 +2,19 @@
 from sqlalchemy.orm import Session
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from ..database.models import User, get_db
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from ...config.settings import DB_PATH
+
+# Add project root to path
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+# Add src to path
+src_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if src_path not in sys.path:
+    sys.path.insert(0, src_path)
+
+from database.models import User, get_db
+from config.settings import DB_PATH
 
 # Helper to get DB session (import get_db from models if needed)
 def get_session():
