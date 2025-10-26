@@ -1,6 +1,6 @@
 class FoodAnalyzer:
-    def __init__(self, food_db_instance):
-        self.food_db = food_db_instance
+    def __init__(self, food_db):
+        self.food_db = food_db
 
     def analyze_food(self, food_desc):
         nutrition_data = self.food_db.get_nutrition(food_desc)
@@ -18,9 +18,13 @@ class FoodAnalyzer:
 
 # Example usage
 if __name__ == "__main__":
-    from nutrition.food_db import FoodDB
+    from food_db import get_nutrition
     
-    food_db = FoodDB()
-    analyzer = FoodAnalyzer(food_db)
-    result = analyzer.analyze_food("apple")
-    print(result)
+    food_input = input("Enter food item: ")
+    result = get_nutrition(food_input)
+    if result:
+        print(f"Nutrition data for {food_input} (100g):")
+        for item in result.get('items', []):
+            print(f"  {item.get('name')}: {item.get('calories')} cal,\n    carbs: {item.get('carbohydrates_total_g')}g,\n    protein: {item.get('protein_g')}g,\n    fat: {item.get('fat_total_g')}g,\n    sugar: {item.get('sugar_g')}g")
+    else:
+        print("Failed to get nutrition data")
