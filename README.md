@@ -1,4 +1,4 @@
-# Comrad.AI - Your Personal AI Assistant (An Agentic AI model )
+# PalAI - Your Personal AI Assistant (An Agentic AI model )
 ### It is daveloped to help users to manage their daily activities and get personalized advice based on their activities.
 ## ✨ Features
 
