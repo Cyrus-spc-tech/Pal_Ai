@@ -1,5 +1,5 @@
 # PalAI - Your Personal AI Assistant (An Agentic AI model )
-### It is daveloped to help users to manage their daily activities and get personalized advice based on their activities.
+### It is developed to help users to manage their daily activities and get personalized advice based on their activities.
 ## ✨ Features
 
 - Real-Talk Chatting: Kick off convos with natural input – it'll respond like a pal, keeping the flow alive with context-aware replies.
