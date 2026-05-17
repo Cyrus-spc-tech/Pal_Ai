@@ -1,4 +1,0 @@
-# List of Python libs (e.g., openai for chat smarts, sqlite3 for DB, pandas for nutrition calcs).
-python-dotenv==1.0.1  # Loads your .env secrets
-SQLAlchemy>=2.0.35  # ORM for database operations (compatible with Python 3.13)
-requests==2.32.3  # For API calls
