@@ -16,6 +16,7 @@ from rich.rule import Rule
 from rich import print as rprint
 
 from agents.dr_pal import DrPal
+from database import get_all_sessions
 
 console = Console()
 
@@ -39,6 +40,7 @@ def print_welcome(session_id: str):
         f"[dim]{today}[/dim]\n\n"
         "[dim]Type '[/dim][yellow]report[/yellow][dim]' to generate your daily report[/dim]\n"
         "[dim]Type '[/dim][yellow]history[/yellow][dim]' to see conversation[/dim]\n"
+        "[dim]Type '[/dim][yellow]sessions[/yellow][dim]' to see all stored sessions[/dim]\n"
         "[dim]Type '[/dim][yellow]clear[/yellow][dim]' to start fresh[/dim]\n"
         "[dim]Type '[/dim][yellow]quit[/yellow][dim]' to exit[/dim]\n"
         "[dim]Type '[/dim][yellow]ask[/yellow][dim]' for built-in questioning[/dim]\n"
@@ -147,6 +149,22 @@ def run_cli():
             )
             response = agent.chat(report_prompt)
             print_dr_pal(response)
+            continue
+
+        elif user_input.lower() == "sessions":
+            sessions = get_all_sessions()
+            if not sessions:
+                console.print("[dim]No sessions found in database.[/dim]")
+            else:
+                console.print(Panel(
+                    "\n".join([
+                        f"[cyan]{s['session_id']}[/cyan] - {s['message_count']} messages - Last active: {s['last_active']}"
+                        for s in sessions
+                    ]),
+                    title="[bold green]Stored Sessions[/bold green]",
+                    border_style="green",
+                    padding=(1, 2),
+                ))
             continue
 
         elif user_input.lower()=="ask":
