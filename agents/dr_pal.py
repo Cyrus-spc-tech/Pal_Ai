@@ -8,6 +8,11 @@ from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_community.chat_message_histories import ChatMessageHistory
 
 from agents.llm import get_llm
+from database import (
+    save_message,
+    get_session_messages,
+    clear_session as db_clear_session,
+)
 
 PROMPT_PATH = Path(__file__).parent.parent / "prompts" / "dr_pal_system.txt"
 
@@ -15,22 +20,28 @@ PROMPT_PATH = Path(__file__).parent.parent / "prompts" / "dr_pal_system.txt"
 def _load_system_prompt() -> str:
     if PROMPT_PATH.exists():
         return PROMPT_PATH.read_text(encoding="utf-8").strip()
-    # Fallback inline prompt (should not happen in normal use)
+    
     return (
         "You are Dr. Pal, a professional health advisor. "
-        "Ask about the user's full day — sleep, food, exercise, mood, "
+        "Talk like a Gen-z so person take intrese in talking "
+        "Ask about the user's full day — sleep, food, exercise, "
         "study, and activities — then give detailed, evidence-based advice."
+        "use the same language the prompt is give like if english then english"
     )
-
-
-_session_store: dict[str, BaseChatMessageHistory] = {}
 
 
 def _get_session_history(session_id: str) -> BaseChatMessageHistory:
 
-    if session_id not in _session_store:
-        _session_store[session_id] = ChatMessageHistory()
-    return _session_store[session_id]
+    history = ChatMessageHistory()
+    messages = get_session_messages(session_id)
+    
+    for msg in messages:
+        if msg["role"] == "human":
+            history.add_user_message(msg["content"])
+        elif msg["role"] == "ai":
+            history.add_ai_message(msg["content"])
+    
+    return history
 
 
 def build_dr_pal_chain():
@@ -60,33 +71,31 @@ class DrPal:
     def __init__(self, session_id: str = "default"):
         self.session_id = session_id
         self.chain = build_dr_pal_chain()
-        self._message_count = 0
 
     def chat(self, user_message: str) -> str:
-        self._message_count += 1
+        # Save user message to database
+        save_message(self.session_id, "human", user_message)
+        
         response = self.chain.invoke(
             {"input": user_message},
             config={"configurable": {"session_id": self.session_id}},
         )
+        
+        # Save AI response to database
+        save_message(self.session_id, "ai", response)
+        
         return response
 
     def get_history(self) -> list[dict]:
-      
-        history = _get_session_history(self.session_id)
-        return [
-            {"role": msg.type, "content": msg.content}
-            for msg in history.messages
-        ]
+        return get_session_messages(self.session_id)
 
     def clear_session(self) -> None:
-     
-        if self.session_id in _session_store:
-            del _session_store[self.session_id]
-        self._message_count = 0
+        db_clear_session(self.session_id)
 
     @property
     def message_count(self) -> int:
-        return self._message_count
+        messages = get_session_messages(self.session_id)
+        return len(messages)
 
     def __repr__(self) -> str:
-        return f"DrPal(session_id={self.session_id!r}, messages={self._message_count})"
+        return f"DrPal(session_id={self.session_id!r}, messages={self.message_count})"
