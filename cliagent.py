@@ -90,7 +90,8 @@ def run_cli():
     # Opening message from Dr. Pal
     opening = agent.chat(
         "Hello, please greet the user warmly and start the daily check-in. "
-        "Ask about their night first — how they slept."
+        "Ask about their night — how much they sleep timing ."
+        
     )
     print_dr_pal(opening)
 
@@ -126,20 +127,21 @@ def run_cli():
             continue
 
         elif user_input.lower() == "report":
-            console.print("[yellow]Generating your full daily report...[/yellow]")
+            console.print("[purple]...Generating your full daily report...[/purple]")
             report_prompt = (
                 "Based on everything I have told you so far today, please generate "
                 "my complete Daily Health Report in your full structured format. "
                 "Include all sections: nutrition analysis, physical performance, "
                 "mental assessment, sleep analysis, cross-domain insights, and "
                 "tomorrow's top 3 priority actions."
+                "give in table format and full detailed analysis"
             )
             response = agent.chat(report_prompt)
             print_dr_pal(response)
             continue
 
         elif user_input.lower()=="fixes":
-            console.print("[yellow]Generating fixes for your lifestyle...[/yellow]")
+            console.print("[purple]...Generating fixes for your lifestyle...[/purple]")
             report_prompt = (
                 "Based on everything I have told you so far today, please generate "
                 "What fixes can be done to improve the current scene "
@@ -168,7 +170,7 @@ def run_cli():
             continue
 
         elif user_input.lower()=="ask":
-            console.print("[yellow]...[/yellow]")
+            console.print("[purple]...[/purple]")
             report_prompt = (
                "Act a Pro who can explain anything soo ask question about"
                "whole day activities what person do whole day "
